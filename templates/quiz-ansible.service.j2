@@ -1,0 +1,22 @@
+# ============================================================
+# Configuration systemd generee par Ansible - Jinja2
+# Service : {{ quiz_app_name }}
+# Machine : {{ ansible_hostname }}
+# ============================================================
+
+[Unit]
+Description={{ quiz_app_name }} - Application Node.js Quiz
+After=network.target
+
+[Service]
+Type=simple
+User={{ quiz_service_user }}
+WorkingDirectory={{ quiz_app_dir }}
+ExecStart=/usr/bin/npx serve -s dist -l {{ quiz_app_port }}
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV={{ quiz_node_env }}
+Environment=PORT={{ quiz_app_port }}
+
+[Install]
+WantedBy=multi-user.target

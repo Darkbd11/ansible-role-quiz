@@ -28,16 +28,32 @@
   changed_when: true
   notify: application_compilee
 
-- name: Installer serve en global
-  ansible.builtin.shell: npm install -g serve
-  changed_when: true
+# -------------------------------------------------------
+# Templates Jinja2
+# -------------------------------------------------------
 
-- name: Lancer l'application en tache de fond
-  ansible.builtin.shell: serve -s dist -l {{ quiz_app_port }}
-  args:
-    chdir: "{{ quiz_app_dir }}"
-  async: 86400
-  poll: 0
+- name: Deployer le fichier de configuration .env (Jinja2)
+  ansible.builtin.template:
+    src: .env.j2
+    dest: "{{ quiz_app_dir }}/.env"
+    owner: "{{ quiz_service_user }}"
+    group: "{{ quiz_service_user }}"
+    mode: "0640"
+
+- name: Deployer le service systemd avec Jinja2
+  ansible.builtin.template:
+    src: quiz-ansible.service.j2
+    dest: /etc/systemd/system/quiz-ansible.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: reload_systemd
+
+- name: Activer et demarrer le service quiz-ansible
+  ansible.builtin.service:
+    name: quiz-ansible
+    enabled: true
+    state: started
 
 - name: Application disponible
   ansible.builtin.debug:

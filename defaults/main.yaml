@@ -2,14 +2,23 @@
 quiz_repo: "https://gitlab.com/ftutorials-labs/quiz-ansible.git"
 quiz_repo_branch: "main"
 
-
 quiz_app_dir: "/opt/quiz-ansible"
 
 quiz_app_port: 3000
-
 
 quiz_node_setup_script: "/tmp/setup_node.sh"
 
 quiz_node_setup_url_debian: "https://deb.nodesource.com/setup_20.x"
 
 quiz_node_setup_url_redhat: "https://rpm.nodesource.com/setup_20.x"
+
+# --- Variables pour les templates Jinja2 ---
+
+# Environnement d'execution Node.js (production / development)
+quiz_node_env: "production"
+
+# Version de Node.js (informative, affichee dans le .env)
+quiz_node_version: "20"
+
+# Utilisateur systeme qui lance le service
+quiz_service_user: "root"

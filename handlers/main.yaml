@@ -1,3 +1,12 @@
+---
+# handlers/main.yaml
+
 - name: application_compilee
   ansible.builtin.debug:
     msg: "L application {{ quiz_app_name }} a ete compilee avec succes sur {{ ansible_hostname }}"
+
+- name: reload_systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: quiz-ansible
+    state: restarted
