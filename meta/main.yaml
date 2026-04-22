@@ -1,0 +1,32 @@
+
+galaxy_info:
+  role_name: ansible-role-BoulayeLeBg
+  author: BoulayeLeBg
+  description: "Role Ansible pour deployer l application Node.js quiz-ansible sur Debian/Ubuntu et RedHat/Rocky Linux"
+  company: ""
+  license: MIT
+  min_ansible_version: "2.12"
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+        - noble
+    - name: Debian
+      versions:
+        - bullseye
+        - bookworm
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+
+  galaxy_tags:
+    - nodejs
+    - quiz
+    - webapp
+    - deployment
+    - multiplatform
+
+dependencies: []

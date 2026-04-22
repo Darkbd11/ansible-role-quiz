@@ -1,0 +1,44 @@
+---
+# tasks/main.yaml - Point d'entrée des tâches du rôle ansible-role-BoulayeLeBg
+
+- name: Afficher les informations de la machine
+  ansible.builtin.debug:
+    msg: "Deploiement de quiz-ansible sur {{ ansible_hostname }} - {{ ansible_distribution }} {{ ansible_distribution_version }}"
+
+- name: Inclure les taches specifiques a la distribution
+  ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}.yaml"
+
+- name: Cloner le depot Git de quiz-ansible
+  ansible.builtin.git:
+    repo: "{{ quiz_repo }}"
+    dest: "{{ quiz_app_dir }}"
+    version: "{{ quiz_repo_branch }}"
+    force: true
+
+- name: Installer les dependances npm
+  ansible.builtin.shell: npm install
+  args:
+    chdir: "{{ quiz_app_dir }}"
+  changed_when: true
+
+- name: Compiler l'application (npm run build)
+  ansible.builtin.shell: npm run build
+  args:
+    chdir: "{{ quiz_app_dir }}"
+  changed_when: true
+  notify: application_compilee
+
+- name: Installer serve en global
+  ansible.builtin.shell: npm install -g serve
+  changed_when: true
+
+- name: Lancer l'application en tache de fond
+  ansible.builtin.shell: serve -s dist -l {{ quiz_app_port }}
+  args:
+    chdir: "{{ quiz_app_dir }}"
+  async: 86400
+  poll: 0
+
+- name: Application disponible
+  ansible.builtin.debug:
+    msg: "quiz-ansible est disponible sur http://{{ ansible_default_ipv4.address }}:{{ quiz_app_port }}"

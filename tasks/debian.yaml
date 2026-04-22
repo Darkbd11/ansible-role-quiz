@@ -1,0 +1,35 @@
+---
+# tasks/debian.yaml - Taches specifiques aux systemes Debian/Ubuntu
+
+- name: "[Debian] Mettre a jour le cache apt"
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: "[Debian] Mettre a jour tous les paquets"
+  ansible.builtin.apt:
+    upgrade: dist
+
+- name: "[Debian] Installer les dependances systeme"
+  ansible.builtin.apt:
+    name:
+      - git
+      - curl
+      - ca-certificates
+    state: present
+
+- name: "[Debian] Telecharger le script de configuration Node.js"
+  ansible.builtin.get_url:
+    url: "{{ quiz_node_setup_url_debian }}"
+    dest: "{{ quiz_node_setup_script }}"
+    mode: "0755"
+
+- name: "[Debian] Executer le script de configuration Node.js"
+  ansible.builtin.shell: "bash {{ quiz_node_setup_script }}"
+  changed_when: true
+
+- name: "[Debian] Installer Node.js"
+  ansible.builtin.apt:
+    name: nodejs
+    state: present
+    update_cache: true

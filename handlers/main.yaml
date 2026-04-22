@@ -1,0 +1,3 @@
+- name: application_compilee
+  ansible.builtin.debug:
+    msg: "L application {{ quiz_app_name }} a ete compilee avec succes sur {{ ansible_hostname }}"

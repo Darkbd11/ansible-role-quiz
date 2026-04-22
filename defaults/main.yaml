@@ -1,0 +1,15 @@
+---
+quiz_repo: "https://gitlab.com/ftutorials-labs/quiz-ansible.git"
+quiz_repo_branch: "main"
+
+
+quiz_app_dir: "/opt/quiz-ansible"
+
+quiz_app_port: 3000
+
+
+quiz_node_setup_script: "/tmp/setup_node.sh"
+
+quiz_node_setup_url_debian: "https://deb.nodesource.com/setup_20.x"
+
+quiz_node_setup_url_redhat: "https://rpm.nodesource.com/setup_20.x"

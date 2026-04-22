@@ -1,0 +1,9 @@
+---
+# vars/main.yaml - Variables internes du role ansible-role-BoulayeLeBg
+# Ces variables ont une priorite plus haute que les defaults
+
+# Nom de l application (utilise dans les messages de debug)
+quiz_app_name: "quiz-ansible"
+
+# Auteur du role
+quiz_role_author: "BoulayeLeBg"

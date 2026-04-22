@@ -1,0 +1,31 @@
+---
+# tasks/redhat.yaml - Taches specifiques aux systemes RedHat/Rocky Linux
+
+- name: "[RedHat] Mettre a jour tous les paquets"
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_cache: true
+
+- name: "[RedHat] Installer les dependances systeme"
+  ansible.builtin.dnf:
+    name:
+      - git
+      - curl
+      - ca-certificates
+    state: present
+
+- name: "[RedHat] Telecharger le script de configuration Node.js"
+  ansible.builtin.get_url:
+    url: "{{ quiz_node_setup_url_redhat }}"
+    dest: "{{ quiz_node_setup_script }}"
+    mode: "0755"
+
+- name: "[RedHat] Executer le script de configuration Node.js"
+  ansible.builtin.shell: "bash {{ quiz_node_setup_script }}"
+  changed_when: true
+
+- name: "[RedHat] Installer Node.js"
+  ansible.builtin.dnf:
+    name: nodejs
+    state: present
